@@ -1,6 +1,6 @@
 import enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class ProductCategory(str, enum.Enum):
@@ -11,6 +11,9 @@ class ProductCategory(str, enum.Enum):
 
 class ProductManufacturer(BaseModel):
     id: int
+    country: str
+    tel: str
+    email: EmailStr
 
 
 class Product(BaseModel):
@@ -20,4 +23,3 @@ class Product(BaseModel):
     price: float
     category: ProductCategory
     manufacturer: ProductManufacturer
-    
