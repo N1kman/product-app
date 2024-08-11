@@ -5,3 +5,4 @@ __all__ = {
 }
 
 from .product import ProductCategory, ProductManufacturer, Product
+from .customer import Payment, Customer
