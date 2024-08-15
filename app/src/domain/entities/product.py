@@ -30,8 +30,4 @@ class Product(BaseModel):
 
 class ProductRead(Product):
     id: int
-    name: str
-    description: str
-    price: float
-    category: ProductCategory
     manufacturer: ProductManufacturerRead
