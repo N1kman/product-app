@@ -18,7 +18,7 @@ class LogLevels(str, enum.Enum):
 
 class APIConfig(BaseSettings):
     host: str = Field(..., alias="api_host")
-    port: str = Field(..., alias="api_port")
+    port: int = Field(..., alias="api_port")
     mode: APIMode = Field(APIMode.local, alias="api_mode")
     log_level: LogLevels = Field(LogLevels.info)
     allowed_origins_str: str = Field(..., alias="allowed_origins")
