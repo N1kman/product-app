@@ -17,6 +17,9 @@ class LogLevels(str, enum.Enum):
 
 
 class APIConfig(BaseSettings):
+    class Config:
+        env_file = ["../_envs/.env-api", "../../_envs/.env-api"]
+
     host: str = Field(..., alias="api_host")
     port: int = Field(..., alias="api_port")
     mode: APIMode = Field(APIMode.local, alias="api_mode")

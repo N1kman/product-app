@@ -9,14 +9,7 @@ from alembic import context
 
 from src.infrastructure.configs import DBConfig
 from src.infrastructure.models import Base
-from src.infrastructure.models import ProductORM, ProductManufacturerORM
-from pathlib import Path
-from dotenv import load_dotenv
-
-absolute_path = Path("../_envs").resolve()
-
-for env_file in absolute_path.glob("*.env*"):
-    load_dotenv(dotenv_path=env_file)
+from src.infrastructure.models import ProductORM, ProductManufacturerORM # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
