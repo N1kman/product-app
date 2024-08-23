@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:15
+    container_name: database_app
+    env_file:
+      - _envs/.env-postgres
+    ports:
+      - "5433:5432"
+    restart: always
+
+  app:
+    build:
+      context: .
+    container_name: api_app
+    env_file:
+      - _envs/.env-db
+      - _envs/.env-api
+    ports:
+      - "9999:8000"
+    depends_on:
+      - db
