@@ -12,4 +12,4 @@ class Base(DeclarativeBase):
     def __repr__(self):
         cols = [f'{col}={getattr(self, col)}' for indx, col in enumerate(self.__table__.columns.keys()) if
                 col in self.repr_cols or indx < self.repr_cols_num]
-        return f'<{self.__class__.__name__} {','.join(cols)}>'
+        return f'<{self.__class__.__name__} {",".join(cols)}>'
