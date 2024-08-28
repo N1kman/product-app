@@ -6,7 +6,7 @@ from src.domain.entities.product import ProductRead
 from src.domain.interfaces import IUseCase
 from src.domain.request import RequestModel
 from src.domain.response import ResponseModel, ResponseFailure, ResponseSuccess
-from src.infrastructure.repositories.db import DBRepository
+from src.infrastructure.repositories import EnDBRepository
 
 
 class GetProductById(IUseCase):
@@ -17,7 +17,7 @@ class GetProductById(IUseCase):
         product: ProductRead
 
     def __init__(
-            self, repository: Annotated[DBRepository, Depends(DBRepository)]
+            self, repository: Annotated[EnDBRepository, Depends(EnDBRepository)]
     ):
         self.repository = repository
 
