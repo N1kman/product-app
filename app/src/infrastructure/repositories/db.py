@@ -7,28 +7,31 @@ from sqlalchemy.orm import selectinload
 from src.domain.entities import Product
 from src.domain.entities.product import ProductRead
 from src.domain.interfaces import IDBRepository
-from src.infrastructure.configs import DBConfig
+from src.infrastructure.configs import ru_db_config, en_db_config, de_db_config
 from src.infrastructure.models import ProductORM, ProductManufacturerORM
 from src.infrastructure.repositories.exceptions import NoSuchItem
 
-engine: AsyncEngine = create_async_engine(
-    url=DBConfig().get_url(),
-    echo=False,
-    echo_pool=False,
-    pool_size=5,
-    max_overflow=10
-)
-session_factory: async_sessionmaker[AsyncSession] = async_sessionmaker(
-    bind=engine,
-    autoflush=False,
-    autocommit=False,
-    expire_on_commit=False,
-    class_=AsyncSession
-)
-
 
 class DBRepository(IDBRepository):
+    @classmethod
+    def get_url(cls) -> str:
+        pass
+
     async def __aenter__(self):
+        engine: AsyncEngine = create_async_engine(
+            url=self.get_url(),
+            echo=False,
+            echo_pool=False,
+            pool_size=5,
+            max_overflow=10
+        )
+        session_factory: async_sessionmaker[AsyncSession] = async_sessionmaker(
+            bind=engine,
+            autoflush=False,
+            autocommit=False,
+            expire_on_commit=False,
+            class_=AsyncSession
+        )
         self.session = session_factory()
         return self
 
@@ -81,3 +84,20 @@ class DBRepository(IDBRepository):
             raise NoSuchItem(f"there is no such item for ID")
         return new_product.id
 
+
+class RuDBRepository(DBRepository):
+    @classmethod
+    def get_url(cls) -> str:
+        return ru_db_config.get_url()
+
+
+class EnDBRepository(DBRepository):
+    @classmethod
+    def get_url(cls) -> str:
+        return en_db_config.get_url()
+
+
+class DeDBRepository(DBRepository):
+    @classmethod
+    def get_url(cls) -> str:
+        return de_db_config.get_url()
