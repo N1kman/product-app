@@ -47,3 +47,4 @@ class APIConfig(BaseSettings):
         return self.mode == APIMode.stage
 
 
+api_config = APIConfig()
