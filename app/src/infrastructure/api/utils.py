@@ -2,6 +2,16 @@ from typing import Any
 
 from fastapi import APIRouter as FastAPIRouter
 
+allow_methods = ["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"]
+allow_headers = [
+    "Content-Type",
+    "Set-Cookie",
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Origin",
+    "Authorization",
+    "Accept-Language"
+]
+
 
 def _get_alternative_path(path: str) -> str:
     return path[:-1] if path.endswith("/") else f"{path}/"
