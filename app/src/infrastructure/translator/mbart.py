@@ -1,6 +1,8 @@
 import asyncio
 import copy
+import enum
 
+from pydantic import BaseModel
 from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 
 from src.domain.interfaces import Language, ITranslator
@@ -17,7 +19,7 @@ class MBartTranslator(ITranslator, IAsyncTranslator):
         tokenizer.src_lang = src_lang.value
 
         for field, value in obj.__dict__.items():
-            if isinstance(value, str):
+            if not isinstance(value, enum.Enum) and isinstance(value, str):
                 tokenizer.src_lang = src_lang.value
                 encoded = await asyncio.to_thread(tokenizer, value, return_tensors="pt")
                 generated_tokens = await asyncio.to_thread(model.generate, **encoded,
@@ -25,6 +27,9 @@ class MBartTranslator(ITranslator, IAsyncTranslator):
                                                                target_lang.value])
                 res = await asyncio.to_thread(tokenizer.batch_decode, generated_tokens, skip_special_tokens=True)
                 setattr(translated_obj, field, res[0])
+            if isinstance(value, BaseModel) or (
+                    (isinstance(value, object) and not isinstance(value, (str, int, float, bool, list, dict, tuple)))):
+                setattr(translated_obj, field, await self.async_translate_obj(value, src_lang, target_lang))
 
         return translated_obj
 
@@ -33,7 +38,7 @@ class MBartTranslator(ITranslator, IAsyncTranslator):
         tokenizer.src_lang = src_lang.value
 
         for field, value in obj.__dict__.items():
-            if isinstance(value, str):
+            if not isinstance(value, enum.Enum) and isinstance(value, str):
                 encoded = tokenizer(value, return_tensors="pt")
                 generated_tokens = model.generate(
                     **encoded,
@@ -41,5 +46,8 @@ class MBartTranslator(ITranslator, IAsyncTranslator):
                 )
                 res = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
                 setattr(translated_obj, field, res)
+            if isinstance(value, BaseModel) or (
+                    (isinstance(value, object) and not isinstance(value, (str, int, float, bool, list, dict, tuple)))):
+                setattr(translated_obj, field, self.translate_obj(value, src_lang, target_lang))
 
         return translated_obj
