@@ -29,7 +29,11 @@ class AddProduct(IUseCase):
     async def execute(self, request: Request):
         try:
             async with self.broker as producer:
-                await producer.send_message(kafka_config.KAFKA_TOPIC, request.product)
+                await producer.send_message(
+                    kafka_config.KAFKA_TOPIC,
+                    request.product, Product.__name__,
+                    EnDBRepository.add_product.__name__
+                )
             product = Product(**request.product.model_dump())
             async with self.repository as repository:
                 id = await repository.add_product(product)
