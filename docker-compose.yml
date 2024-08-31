@@ -1,22 +1,70 @@
 version: "3.7"
 services:
-  db:
+  db_en:
     image: postgres:15
-    container_name: database_app
+    container_name: database_en
     env_file:
       - _envs/.env-postgres
     ports:
       - "5433:5432"
     restart: always
 
+  db_ru:
+    image: postgres:15
+    container_name: database_ru
+    env_file:
+      - _envs/.env-postgres
+    ports:
+      - "5434:5432"
+    restart: always
+
+  db_de:
+    image: postgres:15
+    container_name: database_de
+    env_file:
+      - _envs/.env-postgres
+    ports:
+      - "5435:5432"
+    restart: always
+
+  zookeeper:
+    container_name: zookeeper
+    restart: always
+    image: docker.io/bitnami/zookeeper:3.8
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    container_name: kafka
+    restart: always
+    image: docker.io/bitnami/kafka:3.3
+    ports:
+      - "9093:9094"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
+
   app:
     build:
       context: .
     container_name: api_app
     env_file:
-      - _envs/.env-db
+      - _envs/.env-db_en
       - _envs/.env-api
     ports:
       - "9999:8000"
     depends_on:
-      - db
+      - db_en
+      - db_ru
+      - db_de
+      - zookeeper
+      - kafka
