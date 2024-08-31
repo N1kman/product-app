@@ -41,7 +41,8 @@ services:
     restart: always
     image: docker.io/bitnami/kafka:3.3
     ports:
-      - "9093:9094"
+      - "9094:9094"
+      - "9092:9092"
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
@@ -53,18 +54,18 @@ services:
     depends_on:
       - zookeeper
 
-  app:
-    build:
-      context: .
-    container_name: api_app
-    env_file:
-      - _envs/.env-db_en
-      - _envs/.env-api
-    ports:
-      - "9999:8000"
-    depends_on:
-      - db_en
-      - db_ru
-      - db_de
-      - zookeeper
-      - kafka
+#  app:
+#    build:
+#      context: .
+#    container_name: api_app
+#    env_file:
+#      - _envs/.env-db_en
+#      - _envs/.env-api
+#    ports:
+#      - "9999:8000"
+#    depends_on:
+#      - db_en
+#      - db_ru
+#      - db_de
+#      - zookeeper
+#      - kafka
