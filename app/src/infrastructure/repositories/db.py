@@ -13,6 +13,7 @@ from src.infrastructure.repositories.exceptions import NoSuchItem
 
 
 class DBRepository(IDBRepository):
+
     @classmethod
     def get_url(cls) -> str:
         pass
@@ -54,6 +55,17 @@ class DBRepository(IDBRepository):
         if result is None:
             raise NoSuchItem(f"there is no such item for ID {id}")
         return ProductRead.model_validate(result, from_attributes=True)
+
+    async def get_products(self) -> list[ProductRead]:
+        query = (
+            select(ProductORM)
+            .options(selectinload(ProductORM.manufacturer))
+        )
+        query_response = await self.session.execute(query)
+        result = query_response.scalars().all()
+        if result is None:
+            raise NoSuchItem(f"there is no such items")
+        return [ProductRead.model_validate(item, from_attributes=True) for item in result]
 
     async def add_product(self, product: Product):
         new_manufacturer = None

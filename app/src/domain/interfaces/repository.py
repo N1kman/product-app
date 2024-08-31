@@ -5,6 +5,9 @@ from src.domain.entities.product import ProductRead
 
 
 class IDBRepository(ABC):
+    @abstractmethod
+    async def get_products(self) -> list[ProductRead]:
+        pass
 
     @abstractmethod
     async def get_product_by_id(self, id: int) -> ProductRead:
