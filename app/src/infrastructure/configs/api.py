@@ -25,6 +25,7 @@ class APIConfig(BaseSettings):
     mode: APIMode = Field(APIMode.local, alias="api_mode")
     log_level: LogLevels = Field(LogLevels.info)
     allowed_origins_str: str = Field(..., alias="allowed_origins")
+    https: bool = Field(...)
 
     @property
     def allowed_origins(self) -> list[str]:
