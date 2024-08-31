@@ -33,7 +33,13 @@ class KafkaProducer(BrokerProducer):
         finally:
             await admin_client.close()
 
-    async def send_message(self, topic: str, obj: BaseModel):
+    async def send_message(self, topic: str, obj: BaseModel, model, method):
         if self.producer:
-            await self.producer.send_and_wait(topic, json.dumps(obj.model_dump()).encode("utf-8"))
+            await self.producer.send_and_wait(topic, json.dumps(
+                {
+                   "model": model,
+                   "method": method,
+                   "data": obj.model_dump()
+                }
+            ).encode("utf-8"))
 
