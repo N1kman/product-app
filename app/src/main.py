@@ -5,6 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
+from src.domain.entities import Product
 from src.domain.interfaces import Language
 from src.infrastructure.api.utils import allow_methods, allow_headers
 from src.infrastructure.api.v1.product import router as product_router
@@ -58,15 +59,15 @@ main_app.add_middleware(
 )
 
 # start local
-# if __name__ == "__main__":
-#     if api_config.https:
-#         uvicorn.run(
-#             "src.main:main_app",
-#             port=api_config.port,
-#             host=api_config.host,
-#             reload=True,
-#             ssl_keyfile='../../certs/keyfile.key',
-#             ssl_certfile='../../certs/certfile.crt'
-#         )
-#     else:
-#         uvicorn.run("src.main:main_app", port=api_config.port, host=api_config.host, reload=True)
+if __name__ == "__main__":
+    if api_config.https:
+        uvicorn.run(
+            "src.main:main_app",
+            port=api_config.port,
+            host=api_config.host,
+            reload=True,
+            ssl_keyfile='../../certs/keyfile.key',
+            ssl_certfile='../../certs/certfile.crt'
+        )
+    else:
+        uvicorn.run("src.main:main_app", port=api_config.port, host=api_config.host, reload=True)
