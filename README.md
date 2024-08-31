@@ -4,7 +4,7 @@
 
 [Schema](##shema)
 
-[Local start](##local-start)
+[Local start]([##local-start](https://github.com/N1kman/product-app?tab=readme-ov-file#local-start))
 
 [Alembic](##alembic)
 
