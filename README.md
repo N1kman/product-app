@@ -1,14 +1,14 @@
 ## Content
 
-[About](##about)
+[About](#about)
 
-[Schema](##shema)
+[Schema](#shema)
 
-[##local-start](https://github.com/N1kman/product-app?tab=readme-ov-file#local-start)
+[Local start](#local-start)
 
-[Alembic](##alembic)
+[Alembic](#alembic)
 
-[Docker](##docker)
+[Docker](#docker)
 
 ## About
 
