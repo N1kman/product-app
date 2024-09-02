@@ -1,0 +1,12 @@
+{
+  "name": "milk",
+  "description": "3.2 procents",
+  "price": 1.72,
+  "category": "category A",
+  "manufacturer_id": 4,
+  "manufacturer": {
+    "country": "Belarus",
+    "tel": "+375447262248",
+    "email": "test@test.com"
+  }
+}
