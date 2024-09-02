@@ -8,8 +8,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 from src.infrastructure.configs import RuDBConfig, DeDBConfig, EnDBConfig
-from src.infrastructure.models import Base
-from src.infrastructure.models import ProductORM, ProductManufacturerORM # noqa
+from src.infrastructure.models import *  # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -36,7 +35,10 @@ dict_lang = {
     "en": EnDBConfig(),
     "de": DeDBConfig(),
 }
-config.set_main_option("sqlalchemy.url", dict_lang.get(lang).get_url())
+conf = dict_lang.get(lang)
+if not conf:
+    conf = EnDBConfig()
+config.set_main_option("sqlalchemy.url", conf.get_url())
 
 
 def run_migrations_offline() -> None:
