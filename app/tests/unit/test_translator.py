@@ -25,3 +25,27 @@ async def test_translate_from_en_to_ru(get_product_data):
     }
     print(tr_product)
     assert tr_product == Product(**expected)
+
+
+async def test_translate_from_en_to_de(get_product_data):
+    product = Product(**get_product_data)
+    mbart_translator = MBartTranslator()
+    tr_product = await mbart_translator.async_translate_obj(
+        product,
+        Language.en,
+        Language.de
+    )
+    expected = {
+        "name": "Milch",
+        "description": "3,2 Prozent",
+        "price": 1.72,
+        "category": "category A",
+        "manufacturer_id": 4,
+        "manufacturer": {
+            "country": "Weißrussland",
+            "tel": "+375447262248",
+            "email": "test@test.com"
+        }
+    }
+    print(tr_product)
+    assert tr_product == Product(**expected)
