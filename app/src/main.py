@@ -5,13 +5,15 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from src.domain.entities import Product
 from src.domain.interfaces import Language
 from src.infrastructure.api.utils import allow_methods, allow_headers
 from src.infrastructure.api.v1.product import router as product_router
+from src.infrastructure.api.v1.customer import router as customer_router
+from src.infrastructure.api.v1.order import router as order_router
 from src.infrastructure.configs import api_config, kafka_config
 from src.infrastructure.kafka import KafkaProducer, KafkaConsumer
-from src.infrastructure.repositories import RuDBRepository, DeDBRepository
+from src.infrastructure.repositories import RuDBRepository, DeDBRepository, EnDBRepository, \
+    payment_options_en, payment_options_ru, payment_options_de
 
 
 @asynccontextmanager
@@ -38,6 +40,12 @@ async def lifespan(app: FastAPI):
             )
         )
     )
+    async with EnDBRepository() as session_en:
+        async with RuDBRepository() as session_ru:
+            async with DeDBRepository() as session_de:
+                await session_en.init_db(payment_options_en)
+                await session_ru.init_db(payment_options_ru)
+                await session_de.init_db(payment_options_de)
     yield
     for task in tasks:
         if not task.done():
@@ -49,6 +57,8 @@ main_app = FastAPI(
 )
 
 main_app.include_router(product_router)
+main_app.include_router(customer_router)
+main_app.include_router(order_router)
 
 main_app.add_middleware(
     CORSMiddleware,
