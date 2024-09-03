@@ -35,14 +35,6 @@ def get_db_imple(accept_language):
     return repos.get(lang)
 
 
-def get_usecase_get_product_by_id(accept_language: str = Header("en")):
-    return GetProductById(get_db_imple(accept_language))
-
-
-def get_usecase_get_products(accept_language: str = Header("en")):
-    return GetProducts(get_db_imple(check_language(accept_language)))
-
-
 def _get_alternative_path(path: str) -> str:
     return path[:-1] if path.endswith("/") else f"{path}/"
 
