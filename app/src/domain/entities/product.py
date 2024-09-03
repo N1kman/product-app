@@ -1,7 +1,7 @@
 import enum
 from typing import Self
 
-from pydantic import BaseModel, EmailStr, model_validator
+from pydantic import BaseModel, EmailStr, model_validator, Field
 
 
 class ProductCategory(str, enum.Enum):
@@ -36,5 +36,6 @@ class Product(BaseModel):
 
 
 class ProductRead(Product):
-    id: int
+    id: int = Field(..., title="id")
     manufacturer: ProductManufacturerRead
+

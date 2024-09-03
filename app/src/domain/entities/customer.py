@@ -1,14 +1,23 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class Payment(BaseModel):
     option: str
 
 
-class Customer(BaseModel):
+class PaymentRead(Payment):
     id: int
+
+
+class Customer(BaseModel):
     name: str
     surname: str
+    email: EmailStr
     age: int
     passport_number: str
-    payment: Payment
+    payment_options: list[int]
+
+
+class CustomerRead(Customer):
+    id: int
+    payment_options: list[PaymentRead]
