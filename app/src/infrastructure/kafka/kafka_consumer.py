@@ -5,7 +5,7 @@ from typing import Annotated
 from aiokafka import AIOKafkaConsumer
 from fastapi import Depends
 
-from src.domain.entities import Product
+from src.domain.entities import Product, Customer, Order
 from src.domain.interfaces import Language
 from src.infrastructure.configs import kafka_config
 from src.infrastructure.repositories.db import DBRepository
@@ -13,10 +13,14 @@ from src.infrastructure.translator import MBartTranslator
 
 models_with_name = {
     Product.__name__: Product,
+    Customer.__name__: Customer,
+    Order.__name__: Order,
 }
 
 methods_with_name = {
     DBRepository.add_product.__name__: DBRepository.add_product,
+    DBRepository.add_customer.__name__: DBRepository.add_customer,
+    DBRepository.add_order.__name__: DBRepository.add_order,
 }
 
 
