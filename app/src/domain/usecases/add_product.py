@@ -34,9 +34,8 @@ class AddProduct(IUseCase):
                     request.product, Product.__name__,
                     EnDBRepository.add_product.__name__
                 )
-            product = Product(**request.product.model_dump())
             async with self.repository as repository:
-                id = await repository.add_product(product)
+                id = await repository.add_product(request.product)
             return ResponseSuccess.build(
                 payload=id,
                 status=ResponseSuccess.ResponseStatus.SUCCESS
