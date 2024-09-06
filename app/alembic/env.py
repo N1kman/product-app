@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-from src.infrastructure.configs import RuDBConfig, DeDBConfig, EnDBConfig
+from src.infrastructure.configs import db_config
 from src.infrastructure.models import *  # noqa
 
 # this is the Alembic Config object, which provides
@@ -29,16 +29,7 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-lang = context.get_x_argument(as_dictionary=True).get("lang")
-dict_lang = {
-    "ru": RuDBConfig(),
-    "en": EnDBConfig(),
-    "de": DeDBConfig(),
-}
-conf = dict_lang.get(lang)
-if not conf:
-    conf = EnDBConfig()
-config.set_main_option("sqlalchemy.url", conf.get_url())
+config.set_main_option("sqlalchemy.url", db_config.get_url())
 
 
 def run_migrations_offline() -> None:
