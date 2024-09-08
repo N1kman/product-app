@@ -1,36 +1,64 @@
-from sqlalchemy import ForeignKey, Column, Table, PrimaryKeyConstraint
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from src.infrastructure.models import Base
 
 
-payment_table = Table(
-    "payment",
-    Base.metadata,
-    Column("customer_id", ForeignKey("customer.id")),
-    Column("payment_option_id", ForeignKey("payment_option.id")),
-    PrimaryKeyConstraint("customer_id", "payment_option_id")
-)
+class CustomerORM(Base):
+    __tablename__ = "customer"
+
+    id: Mapped[int] = mapped_column(
+        primary_key=True,
+        autoincrement=True,
+    )
+
+    name: Mapped[str] = mapped_column(
+        nullable=False,
+    )
+    surname: Mapped[str] = mapped_column(
+        nullable=False,
+    )
+    email: Mapped[str] = mapped_column(
+        nullable=False,
+    )
+    address: Mapped[str] = mapped_column(
+        nullable=False,
+    )
+
+    orders: Mapped[list["OrderORM"]] = relationship(
+        "OrderORM",
+    )
+    payment_options: Mapped[list["PaymentORM"]] = relationship(
+        "PaymentORM",
+        cascade="all, delete-orphan",
+    )
 
 
 class PaymentOptionORM(Base):
     __tablename__ = "payment_option"
 
-    option: Mapped[str] = mapped_column(nullable=False)
+    id: Mapped[int] = mapped_column(
+        primary_key=True,
+        autoincrement=True,
+    )
 
-
-class CustomerORM(Base):
-    __tablename__ = "customer"
-
-    name: Mapped[str] = mapped_column(nullable=False)
-    surname: Mapped[str] = mapped_column(nullable=False)
-    email: Mapped[str] = mapped_column(nullable=False)
-    age: Mapped[int] = mapped_column(nullable=False)
-    passport_number: Mapped[str] = mapped_column(nullable=False)
-
-    payment_options: Mapped[list["PaymentOptionORM"]] = relationship(
-        'PaymentOptionORM',
-        secondary=payment_table
+    option: Mapped[str] = mapped_column(
+        nullable=False,
     )
 
 
+class PaymentORM(Base):
+    __tablename__ = "payment"
+
+    customer_id: Mapped[int] = mapped_column(
+        ForeignKey("customer.id"),
+        primary_key=True,
+    )
+    payment_option_id: Mapped[int] = mapped_column(
+        ForeignKey("payment_option.id"),
+        primary_key=True,
+    )
+
+    payment_option: Mapped["PaymentOptionORM"] = relationship(
+        "PaymentOptionORM",
+    )
