@@ -1,13 +1,17 @@
+import os
 from urllib.parse import quote_plus
 
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings
+
+path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../../_envs/.env-db")
 
 
 class DBConfig(BaseSettings):
 
     class Config:
         env_prefix = "db_"
+        env_file = [path]
 
     hostname: str = Field(...)
     port: int = Field(...)
@@ -21,21 +25,4 @@ class DBConfig(BaseSettings):
         return f"{self.driver}://{self.user}:{encoded_password}@{self.hostname}:{self.port}/{self.name}"
 
 
-class EnDBConfig(DBConfig):
-    class Config:
-        env_file = ["../_envs/.env-db_en", "../../_envs/.env-db_en"]
-
-
-class RuDBConfig(DBConfig):
-    class Config:
-        env_file = ["../_envs/.env-db_ru", "../../_envs/.env-db_ru"]
-
-
-class DeDBConfig(DBConfig):
-    class Config:
-        env_file = ["../_envs/.env-db_de", "../../_envs/.env-db_de"]
-
-
-en_db_config = EnDBConfig()
-ru_db_config = RuDBConfig()
-de_db_config = DeDBConfig()
+db_config = DBConfig()

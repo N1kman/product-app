@@ -1,10 +1,14 @@
+import os
+
 from pydantic import Field
 from pydantic_settings import BaseSettings
+
+path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../../_envs/.env-kafka")
 
 
 class KafkaConfig(BaseSettings):
     class Config:
-        env_file = ["../_envs/.env-kafka", "../../_envs/.env-kafka"]
+        env_file = [path]
 
     KAFKA_BOOTSTRAP_SERVERS: str = Field(...)
     KAFKA_TOPIC: str = Field(...)

@@ -1,7 +1,10 @@
 import enum
+import os
 
 from pydantic import Field
 from pydantic_settings import BaseSettings
+
+path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../../_envs/.env-api")
 
 
 class APIMode(str, enum.Enum):
@@ -18,7 +21,7 @@ class LogLevels(str, enum.Enum):
 
 class APIConfig(BaseSettings):
     class Config:
-        env_file = ["../_envs/.env-api", "../../_envs/.env-api"]
+        env_file = [path]
 
     host: str = Field(..., alias="api_host")
     port: int = Field(..., alias="api_port")
