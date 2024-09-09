@@ -29,12 +29,8 @@ class TranslationORM(Base):
 class LanguageORM(Base):
     __tablename__ = "language"
 
-    id: Mapped[int] = mapped_column(
-        primary_key=True,
-        autoincrement=True,
-    )
-
     abbr: Mapped[str] = mapped_column(
+        primary_key=True,
         nullable=False,
     )
     fullname: Mapped[str] = mapped_column(
