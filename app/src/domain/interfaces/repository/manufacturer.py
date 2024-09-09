@@ -36,9 +36,12 @@ class IManufacturerRepository(IRepository):
     @abstractmethod
     async def update(
             self,
+            id: int,
             manufacturer: ManufacturerWithTranslations,
     ) -> ManufacturerReadWithTranslations:
         """
+        :param id:
+        id of manufacturer
         :param manufacturer:
         manufacturer with translations
         :return:

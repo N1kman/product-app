@@ -35,9 +35,12 @@ class ICategoryRepository(IRepository):
     @abstractmethod
     async def update(
             self,
+            id: int,
             category: CategoryWithTranslations,
     ) -> CategoryReadWithTranslations:
         """
+        :param id:
+        id of category
         :param category:
         category with translations
         :return:

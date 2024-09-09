@@ -36,9 +36,12 @@ class IProductRepository(IRepository):
     @abstractmethod
     async def update(
             self,
+            id: int,
             product: ProductWithTranslations,
     ) -> ProductReadWithTranslations:
         """
+        :param id:
+        id of product
         :param product:
         product with translations
         :return:
