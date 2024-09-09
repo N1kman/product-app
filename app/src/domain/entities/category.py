@@ -8,7 +8,7 @@ class Category(BaseModel):
 
 
 class CategoryWithTranslations(Category):
-    name: list[Translation]
+    name: list[Translation] = list()
 
 
 class CategoryRead(Category):
@@ -16,4 +16,4 @@ class CategoryRead(Category):
 
 
 class CategoryReadWithTranslations(CategoryRead):
-    name: list[Translation]
+    name: list[Translation] = list()

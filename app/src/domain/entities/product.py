@@ -13,8 +13,8 @@ class Product(BaseModel):
 
 
 class ProductWithTranslations(Product):
-    name: list[Translation]
-    description: list[Translation]
+    name: list[Translation] = list()
+    description: list[Translation] = list()
 
 
 class ProductRead(Product):
@@ -22,8 +22,8 @@ class ProductRead(Product):
 
 
 class ProductReadWithTranslations(ProductRead):
-    name: list[Translation]
-    description: list[Translation]
+    name: list[Translation] = list()
+    description: list[Translation] = list()
 
 
 class ProductReadWithCategory(ProductRead):

@@ -10,9 +10,9 @@ class Manufacturer(BaseModel):
 
 
 class ManufacturerWithTranslations(Manufacturer):
-    name: list[Translation]
-    country: list[Translation]
-    address: list[Translation]
+    name: list[Translation] = list()
+    country: list[Translation] = list()
+    address: list[Translation] = list()
 
 
 class ManufacturerRead(BaseModel):
@@ -20,6 +20,6 @@ class ManufacturerRead(BaseModel):
 
 
 class ManufacturerReadWithTranslations(ManufacturerRead):
-    name: list[Translation]
-    country: list[Translation]
-    address: list[Translation]
+    name: list[Translation] = list()
+    country: list[Translation] = list()
+    address: list[Translation] = list()
