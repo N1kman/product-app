@@ -8,3 +8,8 @@ class Language(BaseModel):
 
 class LanguageRead(Language):
     id: int
+
+
+class Translation(BaseModel):
+    translated: str
+    abbr_lang: str

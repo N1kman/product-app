@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from src.domain.entities import CategoryRead, ManufacturerRead
+from src.domain.entities import CategoryRead, ManufacturerRead, Translation
 
 
 class Product(BaseModel):
@@ -15,6 +15,11 @@ class Product(BaseModel):
 class ProductRead(Product):
     id: int
 
+
+class ProductReadWithTranslations(ProductRead):
+    name: list[Translation]
+    description: list[Translation]
+    
 
 class ProductReadWithCategory(ProductRead):
     category: CategoryRead
