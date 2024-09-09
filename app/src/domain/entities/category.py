@@ -7,6 +7,10 @@ class Category(BaseModel):
     name: str
 
 
+class CategoryWithTranslations(Category):
+    name: list[Translation]
+
+
 class CategoryRead(Category):
     id: int
 

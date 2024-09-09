@@ -9,6 +9,12 @@ class Manufacturer(BaseModel):
     address: str
 
 
+class ManufacturerWithTranslations(Manufacturer):
+    name: list[Translation]
+    country: list[Translation]
+    address: list[Translation]
+
+
 class ManufacturerRead(BaseModel):
     id: int
 

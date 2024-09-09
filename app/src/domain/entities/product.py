@@ -12,6 +12,11 @@ class Product(BaseModel):
     category_id: int
 
 
+class ProductWithTranslations(Product):
+    name: list[Translation]
+    description: list[Translation]
+
+
 class ProductRead(Product):
     id: int
 
