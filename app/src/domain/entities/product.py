@@ -19,7 +19,7 @@ class ProductRead(Product):
 class ProductReadWithTranslations(ProductRead):
     name: list[Translation]
     description: list[Translation]
-    
+
 
 class ProductReadWithCategory(ProductRead):
     category: CategoryRead
