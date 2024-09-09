@@ -1,6 +1,7 @@
 from abc import abstractmethod
 
-from src.domain.entities import Manufacturer, ManufacturerReadWithTranslations, ManufacturerRead
+from src.domain.entities import Manufacturer, ManufacturerReadWithTranslations, ManufacturerRead, \
+    ManufacturerWithTranslations
 from src.domain.interfaces import IRepository
 from src.domain.language import LanguageEnum
 
@@ -9,14 +10,11 @@ class IManufacturerRepository(IRepository):
     @abstractmethod
     async def add(
             self,
-            manufacturers: list[Manufacturer],
-            available_languages: list[LanguageEnum],
+            manufacturer: ManufacturerWithTranslations,
     ) -> ManufacturerReadWithTranslations:
         """
-        :param manufacturers:
+        :param manufacturer:
         manufacturer with translations
-        :param available_languages:
-        list of languages for translations
         :return:
         created manufacturer with translations
         """
@@ -38,14 +36,11 @@ class IManufacturerRepository(IRepository):
     @abstractmethod
     async def update(
             self,
-            manufacturers: list[Manufacturer],
-            available_languages: list[LanguageEnum],
+            manufacturer: ManufacturerWithTranslations,
     ) -> ManufacturerReadWithTranslations:
         """
-        :param manufacturers:
+        :param manufacturer:
         manufacturer with translations
-        :param available_languages:
-        list of languages for translations
         :return:
         updated manufacturer with translations
         """

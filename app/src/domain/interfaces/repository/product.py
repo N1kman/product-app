@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from src.domain.entities import Product, ProductReadWithTranslations, ProductRead
+from src.domain.entities import Product, ProductReadWithTranslations, ProductRead, ProductWithTranslations
 from src.domain.interfaces import IRepository
 from src.domain.language import LanguageEnum
 
@@ -10,14 +10,11 @@ class IProductRepository(IRepository):
     @abstractmethod
     async def add(
             self,
-            products: list[Product],
-            available_languages: list[LanguageEnum],
+            product: ProductWithTranslations,
     ) -> ProductReadWithTranslations:
         """
-        :param products:
+        :param product:
         product with translations
-        :param available_languages:
-        list of languages for translations
         :return:
         created product with translations
         """
@@ -39,14 +36,11 @@ class IProductRepository(IRepository):
     @abstractmethod
     async def update(
             self,
-            products: list[Product],
-            available_languages: list[LanguageEnum],
+            product: ProductWithTranslations,
     ) -> ProductReadWithTranslations:
         """
-        :param products:
+        :param product:
         product with translations
-        :param available_languages:
-        list of languages for translations
         :return:
         updated product with translations
         """

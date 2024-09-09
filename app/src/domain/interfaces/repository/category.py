@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
-from src.domain.entities import Category, CategoryReadWithTranslations, CategoryRead
-from src.domain.interfaces import IRepository
+from src.domain.entities import Category, CategoryReadWithTranslations, CategoryRead, CategoryWithTranslations
+from src.domain.interfaces.repository import IRepository
 from src.domain.language import LanguageEnum
 
 
@@ -9,14 +9,11 @@ class ICategoryRepository(IRepository):
     @abstractmethod
     async def add(
             self,
-            categories: list[Category],
-            available_languages: list[LanguageEnum],
+            category: CategoryWithTranslations,
     ) -> CategoryReadWithTranslations:
         """
-        :param categories:
+        :param category:
         category with translations
-        :param available_languages:
-        list of languages for translations
         :return:
         created category with translations
         """
@@ -38,14 +35,11 @@ class ICategoryRepository(IRepository):
     @abstractmethod
     async def update(
             self,
-            categories: list[Category],
-            available_languages: list[LanguageEnum],
+            category: CategoryWithTranslations,
     ) -> CategoryReadWithTranslations:
         """
-        :param categories:
+        :param category:
         category with translations
-        :param available_languages:
-        list of languages for translations
         :return:
         updated category with translations
         """
