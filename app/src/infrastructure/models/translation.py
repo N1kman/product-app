@@ -5,7 +5,7 @@ from src.infrastructure.models import Base
 
 
 class TranslationORM(Base):
-    __abstract__ = True
+    __tablename__ = "translation"
 
     id: Mapped[int] = mapped_column(
         primary_key=True,
@@ -21,8 +21,8 @@ class TranslationORM(Base):
     field_id: Mapped[int] = mapped_column(
         nullable=False,
     )
-    lang_id: Mapped[int] = mapped_column(
-        ForeignKey("language.id")
+    lang_abbr: Mapped[int] = mapped_column(
+        ForeignKey("language.abbr")
     )
 
 
