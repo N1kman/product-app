@@ -7,7 +7,7 @@ class Language(BaseModel):
 
 
 class LanguageRead(Language):
-    id: int
+    pass
 
 
 class Translation(BaseModel):
