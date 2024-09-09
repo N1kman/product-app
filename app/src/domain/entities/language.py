@@ -12,4 +12,4 @@ class LanguageRead(Language):
 
 class Translation(BaseModel):
     translated: str
-    abbr_lang: str
+    lang_abbr: str
