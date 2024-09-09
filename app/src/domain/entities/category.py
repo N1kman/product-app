@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 from src.domain.entities import Translation
@@ -16,4 +18,12 @@ class CategoryRead(Category):
 
 
 class CategoryReadWithTranslations(CategoryRead):
+    name: list[Translation] = list()
+
+
+class CategoryUpdate(BaseModel):
+    name: Optional[str] = None
+
+
+class CategoryUpdateWithTranslations(CategoryUpdate):
     name: list[Translation] = list()
