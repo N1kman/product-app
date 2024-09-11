@@ -1,6 +1,11 @@
 from abc import abstractmethod
 
-from src.domain.entities import Category, CategoryReadWithTranslations, CategoryRead, CategoryWithTranslations
+from src.domain.entities import (
+    CategoryReadWithTranslations,
+    CategoryRead,
+    CategoryWithTranslations,
+    CategoryUpdateWithTranslations,
+)
 from src.domain.interfaces.repository import IRepository
 from src.domain.language import LanguageEnum
 
@@ -36,7 +41,7 @@ class ICategoryRepository(IRepository):
     async def update(
             self,
             id: int,
-            category: CategoryWithTranslations,
+            category: CategoryUpdateWithTranslations,
     ) -> CategoryReadWithTranslations:
         """
         :param id:

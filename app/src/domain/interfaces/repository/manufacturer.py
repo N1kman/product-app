@@ -1,8 +1,12 @@
 from abc import abstractmethod
 
-from src.domain.entities import Manufacturer, ManufacturerReadWithTranslations, ManufacturerRead, \
-    ManufacturerWithTranslations
-from src.domain.interfaces import IRepository
+from src.domain.entities import (
+    ManufacturerReadWithTranslations,
+    ManufacturerRead,
+    ManufacturerWithTranslations,
+    ManufacturerUpdateWithTranslations,
+)
+from src.domain.interfaces.repository import IRepository
 from src.domain.language import LanguageEnum
 
 
@@ -37,7 +41,7 @@ class IManufacturerRepository(IRepository):
     async def update(
             self,
             id: int,
-            manufacturer: ManufacturerWithTranslations,
+            manufacturer: ManufacturerUpdateWithTranslations,
     ) -> ManufacturerReadWithTranslations:
         """
         :param id:

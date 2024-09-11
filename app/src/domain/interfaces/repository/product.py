@@ -1,7 +1,12 @@
 from abc import abstractmethod
 
-from src.domain.entities import Product, ProductReadWithTranslations, ProductRead, ProductWithTranslations
-from src.domain.interfaces import IRepository
+from src.domain.entities import (
+    ProductReadWithTranslations,
+    ProductRead,
+    ProductWithTranslations,
+    ProductUpdateWithTranslations,
+)
+from src.domain.interfaces.repository import IRepository
 from src.domain.language import LanguageEnum
 
 
@@ -37,7 +42,7 @@ class IProductRepository(IRepository):
     async def update(
             self,
             id: int,
-            product: ProductWithTranslations,
+            product: ProductUpdateWithTranslations,
     ) -> ProductReadWithTranslations:
         """
         :param id:
