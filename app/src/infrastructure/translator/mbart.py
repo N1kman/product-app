@@ -1,52 +1,74 @@
-import asyncio
 import copy
 import enum
 
+
 from pydantic import BaseModel
-from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
+from transformers import MarianMTModel, MarianTokenizer
 
 from src.domain.interfaces.translator import IAsyncTranslator
 from src.domain.language import LanguageEnum
 
-model_name = "facebook/mbart-large-50-many-to-many-mmt"
-model = MBartForConditionalGeneration.from_pretrained(model_name)
-tokenizer = MBart50TokenizerFast.from_pretrained(model_name)
+tokenizer_ru = MarianTokenizer.from_pretrained(
+    "Helsinki-NLP/opus-mt-en-ru",
+    clean_up_tokenization_spaces=True,
+)
+model_ru = MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-en-ru")
+
+tokenizer_de = MarianTokenizer.from_pretrained(
+    "Helsinki-NLP/opus-mt-en-de",
+    clean_up_tokenization_spaces=True,
+)
+model_de = MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-en-de")
+
+convert_model = {
+    "ru": model_ru,
+    "de": model_de,
+}
+
+convert_tokenizer = {
+    "ru": tokenizer_ru,
+    "de": tokenizer_de,
+}
 
 
 class MBartTranslator(IAsyncTranslator):
 
-    async def async_translate_str(self, string: str, src_lang: LanguageEnum, target_lang: LanguageEnum):
-        tokenizer.src_lang = src_lang.value
-        encoded = await asyncio.to_thread(tokenizer, string, return_tensors="pt")
-        generated_tokens = await asyncio.to_thread(model.generate, **encoded,
-                                                   forced_bos_token_id=tokenizer.lang_code_to_id[
-                                                       target_lang.value])
-        res = await asyncio.to_thread(tokenizer.batch_decode, generated_tokens, skip_special_tokens=True)
+    def translate_str(self, string: str, target_lang: LanguageEnum):
+        if target_lang == LanguageEnum.EN:
+            return string
+        model = convert_model.get(target_lang.value)
+        tokenizer = convert_tokenizer.get(target_lang.value)
+        encoded = tokenizer(string, return_tensors="pt", truncation=True)
+        generated_tokens = model.generate(
+            **encoded,
+            max_length=400,
+            num_return_sequences=1,
+        )
+        res = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
         return res[0]
 
-    async def async_translate_obj(self, obj: BaseModel, src_lang: LanguageEnum, target_lang: LanguageEnum):
+    def translate_obj(self, obj: BaseModel, target_lang: LanguageEnum):
         translated_obj = copy.deepcopy(obj)
-        tokenizer.src_lang = src_lang.value
 
         for field, value in obj.__dict__.items():
             if not isinstance(value, enum.Enum) and isinstance(value, str):
-                setattr(translated_obj, field, await self.async_translate_str(value, src_lang, target_lang))
+                setattr(translated_obj, field, self.translate_str(value, target_lang))
 
             if isinstance(translated_obj, list):
                 for item in translated_obj:
                     if isinstance(item, str):
-                        item = await self.async_translate_str(item, src_lang, target_lang)
-                    if isinstance(item, BaseModel):
-                        item = await self.async_translate_obj(item, src_lang, target_lang)
+                        item = self.translate_str(item, target_lang)
+                    elif isinstance(item, BaseModel):
+                        item = self.translate_obj(item, target_lang)
 
             if isinstance(translated_obj, dict):
                 for key, val in translated_obj.items():
                     if isinstance(val, str):
-                        translated_obj[key] = await self.async_translate_str(val, src_lang, target_lang)
+                        translated_obj[key] = self.translate_str(val, target_lang)
                     if isinstance(val, BaseModel):
-                        translated_obj[key] = await self.async_translate_obj(val, src_lang, target_lang)
+                        translated_obj[key] = self.translate_obj(val, target_lang)
 
             if isinstance(value, BaseModel):
-                setattr(translated_obj, field, await self.async_translate_obj(value, src_lang, target_lang))
+                setattr(translated_obj, field, self.translate_obj(value, target_lang))
 
         return translated_obj
