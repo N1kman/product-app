@@ -17,4 +17,4 @@ class Order(BaseModel):
 
 class OrderRead(Order):
     id: int
-    ordered_at: datetime
+    ordered_at: datetime.datetime

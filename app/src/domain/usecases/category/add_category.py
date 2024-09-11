@@ -1,30 +1,33 @@
-from typing import Union
+from typing import Annotated
 
-from src.domain.entities import ProductReadWithCustomers
+from fastapi import Depends
+
+from src.domain.entities import Category
 from src.domain.interfaces import IUseCase
 from src.domain.request import RequestModel
 from src.domain.response import ResponseModel, ResponseSuccess, ResponseFailure
-from src.infrastructure.repositories.db import DBRepository
+from src.infrastructure.repositories import DBRepository
 
 
-class GetProductWithCustomersById(IUseCase):
+class AddCategory(IUseCase):
     class Request(RequestModel):
-        id: int
+        category: Category
 
     class Response(ResponseModel):
-        product: ProductReadWithCustomers
+        id: int
 
     def __init__(
-            self, repository: DBRepository
+            self,
+            repository: Annotated[DBRepository, Depends(DBRepository)],
     ):
         self.repository = repository
 
-    async def execute(self, request: Request) -> Union[ResponseSuccess, ResponseFailure]:
+    async def execute(self, request: Request):
         try:
             async with self.repository as repository:
-                product = await repository.get_product_with_customers_by_id(request.id)
+                id = await repository.add_customer(request.customer)
             return ResponseSuccess.build(
-                payload=product,
+                payload=id,
                 status=ResponseSuccess.ResponseStatus.SUCCESS
             )
         except Exception as exc:

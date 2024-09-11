@@ -5,21 +5,18 @@ from fastapi import Header, Depends, HTTPException
 from src.domain.entities import Customer
 from src.domain.response import ResponseFailure
 from src.domain.usecases import GetPaymentOptions
-from src.domain.usecases.add_customer import AddCustomer
-from src.domain.usecases.get_customer_by_id import GetCustomerById
-from src.domain.usecases.get_customers import GetCustomers
+from src.domain.usecases import AddCustomer
+from src.domain.usecases import GetCustomerById
+from src.domain.usecases import GetCustomers
 from src.infrastructure.api.utils import APIRouter, get_db_imple, check_language
 
 router = APIRouter(prefix="/customer", tags=["Customers"])
 
 
-def get_usecase_get_payment_options(accept_language: str = Header("en")):
-    return GetPaymentOptions(get_db_imple(check_language(accept_language)))
-
-
 @router.get("/payment_options")
 async def get_payment_options(
-        use_case: Annotated[GetPaymentOptions, Depends(get_usecase_get_payment_options)],
+        use_case: Annotated[GetPaymentOptions, Depends(GetPaymentOptions)],
+        accept_language: str = Header("en"),
 ):
     response = await use_case.execute(
         request=GetPaymentOptions.Request()
@@ -42,13 +39,9 @@ async def add_customer(
     return response
 
 
-def get_usecase_get_customers(accept_language: str = Header("en")):
-    return GetCustomers(get_db_imple(check_language(accept_language)))
-
-
 @router.get("/")
 async def get_customers(
-        use_case: Annotated[GetCustomers, Depends(get_usecase_get_customers)],
+        use_case: Annotated[GetCustomers, Depends(GetCustomers)],
 ):
     response = await use_case.execute(
         request=GetCustomers.Request()
@@ -58,14 +51,10 @@ async def get_customers(
     return response
 
 
-def get_usecase_get_customer_by_id(accept_language: str = Header("en")):
-    return GetCustomerById(get_db_imple(check_language(accept_language)))
-
-
 @router.get("/{customer_id}")
 async def get_customer_by_id(
         customer_id: int,
-        use_case: Annotated[GetCustomerById, Depends(get_usecase_get_customer_by_id)],
+        use_case: Annotated[GetCustomerById, Depends(GetCustomerById)],
 ):
     response = await use_case.execute(
         request=GetCustomerById.Request(id=customer_id)

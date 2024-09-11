@@ -2,7 +2,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from src.domain.entities import CategoryRead, ManufacturerRead, Translation
+from src.domain.entities import CategoryRead, ManufacturerRead
+from src.domain.entities.language import Translation
 
 
 class Product(BaseModel):

@@ -25,6 +25,6 @@ from .product import (
     ProductUpdate,
     ProductUpdateWithTranslations,
 )
-from .language import Language, LanguageRead, Translation
+from .language import Language, LanguageRead
 from .order import OrderDetail, Order, OrderRead
 from .customer import Payment, PaymentOption, PaymentOptionRead, Customer, CustomerRead
