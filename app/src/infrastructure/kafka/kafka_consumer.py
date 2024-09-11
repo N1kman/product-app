@@ -1,14 +1,12 @@
 import asyncio
 import json
-from typing import Annotated
 
 from aiokafka import AIOKafkaConsumer
-from fastapi import Depends
 
 from src.domain.entities import Product, Customer, Order
 from src.domain.interfaces import Language
 from src.infrastructure.configs import kafka_config
-from src.infrastructure.repositories.db import DBRepository
+from src.infrastructure.repositories.db.base import DBRepository
 from src.infrastructure.translator import MBartTranslator
 
 models_with_name = {
