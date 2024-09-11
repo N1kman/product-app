@@ -19,7 +19,7 @@ The application can also be deployed in Docker.
 
 ## Schema
 
-![Описание изображения](docs/schema.png)
+![Описание изображения](docs/schema.jfif)
 
 ## Local start
 
@@ -37,7 +37,9 @@ To run in HTTPS mode, use the api environment variable in the <a href="_envs/.en
 
 Alembic is configured specifically so you only need to update:
 ```
-alembic upgrade head
+alembic -x lang=en upgrade head
+alembic -x lang=ru upgrade head
+alembic -x lang=de upgrade head
 ```
 
 ## Docker
