@@ -35,11 +35,9 @@ To run in HTTPS mode, use the api environment variable in the <a href="_envs/.en
 
 ## Alembic
 
-Alembic is configured specifically so you only need to update all 3 databases.:
+Alembic is configured specifically so you only need to update:
 ```
-alembic -x lang=en upgrade head
-alembic -x lang=ru upgrade head
-alembic -x lang=de upgrade head
+alembic upgrade head
 ```
 
 ## Docker
