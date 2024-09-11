@@ -109,7 +109,7 @@ def upgrade() -> None:
         "translation",
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("translated", sa.String(), nullable=False),
-        sa.Column("table_id", sa.Integer(), nullable=False),
+        sa.Column("table_id", sa.String(), nullable=False),
         sa.Column("field_id", sa.Integer(), nullable=False),
         sa.Column("lang_abbr", sa.String(), nullable=False),
         sa.ForeignKeyConstraint(
