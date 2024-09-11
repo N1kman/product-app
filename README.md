@@ -19,7 +19,7 @@ The application can also be deployed in Docker.
 
 ## Schema
 
-![Описание изображения](docs/schema.jfif)
+![Описание изображения](docs/schema.png)
 
 ## Local start
 
