@@ -15,7 +15,7 @@ class TranslationORM(Base):
     translated: Mapped[str] = mapped_column(
         nullable=False,
     )
-    table_id: Mapped[int] = mapped_column(
+    table_id: Mapped[str] = mapped_column(
         nullable=False,
     )
     field_id: Mapped[int] = mapped_column(

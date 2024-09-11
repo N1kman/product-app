@@ -26,6 +26,7 @@ class OrderORM(Base):
 
     customer: Mapped["CustomerORM"] = relationship(
         "CustomerORM",
+        back_populates="orders",
     )
     order_details: Mapped[list["OrderDetailORM"]] = relationship(
         "OrderDetailORM",
