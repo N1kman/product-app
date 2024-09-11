@@ -1,10 +1,6 @@
 from typing import Any
 
-from fastapi import APIRouter as FastAPIRouter, Header
-
-from src.domain.usecases import GetProductById
-from src.domain.usecases.get_products import GetProducts
-from src.infrastructure.repositories import DeDBRepository, EnDBRepository, RuDBRepository
+from fastapi import APIRouter as FastAPIRouter
 
 allow_methods = ["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"]
 allow_headers = [
@@ -16,23 +12,9 @@ allow_headers = [
     "Accept-Language"
 ]
 
-languages = ["en", "ru", "de"]
 
-
-def check_language(lang):
-    if lang not in languages:
-        return languages[0]
-    return lang
-
-
-def get_db_imple(accept_language):
-    lang = check_language(accept_language.split(',')[0].split(';')[0].strip())
-    repos = {
-        "ru": RuDBRepository(),
-        "en": EnDBRepository(),
-        "de": DeDBRepository(),
-    }
-    return repos.get(lang)
+def convert_header_lang(header_lang: str):
+    return header_lang.split(',')[0].split(';')[0].strip()
 
 
 def _get_alternative_path(path: str) -> str:
