@@ -1,10 +1,1 @@
-from .get_product_by_id import GetProductById
-from .get_products import GetProducts
-from .get_payment_options import GetPaymentOptions
-from .get_products_with_customers import GetProductsWithCustomers
-from .get_product_with_customers_by_id import GetProductWithCustomersById
-from .get_customers import GetCustomers
-from .get_customer_by_id import GetCustomerById
-from .add_product import AddProduct
-from .add_customer import AddCustomer
-from .add_order import AddOrder
+from .category import GetCategory, AddCategory
